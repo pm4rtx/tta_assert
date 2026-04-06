@@ -16,8 +16,8 @@ jobs:
       matrix:
         include:
           - name: windows-x64
-          - runner: windows-latest
-          - arch: x64
+            runner: windows-latest
+            arch: x64
     name: ${{matrix.name}}
     runs-on: ${{matrix.runner}}
     steps:

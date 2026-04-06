@@ -1,0 +1,35 @@
+name: build
+
+on:
+  push:
+    branches:
+      - 'master'
+    paths-ignore:
+      - '*.md'
+  pull_request:
+    paths-ignore:
+      - '*.md'
+
+jobs:
+  windows:
+    strategy:
+      matrix:
+        include:
+          - name: windows-x64
+          - runner: windows-latest
+          - arch: x64
+    name: ${{matrix.name}}
+    runs-on: ${{matrix.runner}}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Clang
+        shell: cmd
+        run: |
+          build.cmd clang debug release run clean
+
+      - name: Build MSVC
+        shell: cmd
+        run: |
+          call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64
+          build.cmd msvc debug release run clean

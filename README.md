@@ -17,8 +17,13 @@ Key Features
     a unit-test and returning `1` or `0` depending on whether any assert has been triggered
 - **Extra** assertion variants to support checking condition directly in `if` statement :
   ```c
-  TTA_ASSERT_IF_MSG(0 != x /* assert triggers if (0 == x) */, "Expected 0 != x") { /* do something if 0 != x */ }
-  TTA_ASSERT_IF(0 != x /* assert triggers if (0 == x) */) { /* do something if 0 != x */ }
+  TTA_ASSERT_IF_MSG(0 != x /* assert triggers if (0 == x) */, "Expected 0 != x")
+  {
+      /* do something if 0 != x */
+  }
+  TTA_ASSERT_IF(0 != x /* assert triggers if (0 == x) */)
+  {
+      /* do something if 0 != x */
   }
   ```
 - **Extra** assertion variants for use as a replacement for `if (!condition) { Report(...); return retval; }`

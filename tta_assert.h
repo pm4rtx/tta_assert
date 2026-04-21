@@ -38,7 +38,7 @@ enum tta_AssertReportLevel
     ktta_AssertReportLevel_Print         = 0,   /**< every assertion triggers a callback setup through `tta_AssertSetReportCback` */
     ktta_AssertReportLevel_PrintAndBreak = 1,   /**< same _Print + assertion triggers a debugbreak when debugger is attached */
     ktta_AssertReportLevel_PrintAndThrow = 2,   /**< same _Print + assertion calls `throw`/`longjmp` to `catch`/`setjmp` later
-                                                     mainly to support reusing exciting code with asserts in tests */
+                                                     mainly to support reusing existing code with asserts in tests */
     ktta_AssertReportLevel_ForceInt      = 0x3fffffff
 };
 
@@ -89,12 +89,12 @@ TTA_ASSERT_MAY_THROW_API int tta_AssertReport(const char *cond, const char *, in
  *  @brief  The function that could be used to implement testing by re-using existing code containing TTA_ASSERT:
  *              1. Just pass the `callback` that executes a code with TTA_ASSERT, and `userdata` for it
  *              2. If TTA_ASSERT is triggered by any code executed by `callback` (not necessarily triggered within `callback`
- *                 which assumes arbitrarily nesting), this function returns `1`, otherwise it resturns `0`,
+ *                 which assumes arbitrarily nesting), this function returns `1`, otherwise it returns `0`,
  *                 so it's really easy to count failed tests `failed += tta_AssertCallAndCatch(&my_test, my_test_userdata);`
  *  @note   For now, it's not reentrant: any code executed within callback is not allowed to call `tta_AssertCallAndCatch`
  *  @warning  When `TTA_ASSERT_NOEXCEPT` is enabled, this function uses `setjmp`/`longjmp` internally.
  *            `longjmp` over C++ objects with non-trivial destructors is undefined behavior (C++ $21.10.4, CERT ERR52-CPP).
- *            Ensure no RAII objects (`std::string`, `std::vectorё, smart pointers, lock guards, etc.) are alive between
+ *            Ensure no RAII objects (`std::string`, `std::vector`, smart pointers, lock guards, etc.) are alive between
  *            the `TTA_ASSERT` call site and the `tta_AssertCallAndCatch` frame when using `TTA_ASSERT_NOEXCEPT`.
  */
 TTA_ASSERT_MAY_THROW_API int tta_AssertCallAndCatch(int (*callback)(void *), void *userdata);
@@ -128,8 +128,8 @@ TTA_ASSERT_MAY_THROW_API int tta_AssertCallAndCatch(int (*callback)(void *), voi
 #   undef TTA_ASSERT_RET_MSG
 #endif
 
-#ifdef TTA_IF_ASSERT
-#   undef TTA_IF_ASSERT
+#ifdef TTA_ASSERT_IF
+#   undef TTA_ASSERT_IF
 #endif
 
 #ifdef TTA_ASSERT_IF_MSG
